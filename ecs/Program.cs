@@ -5,7 +5,7 @@ class Program
     static void Main(string[] args)
     {
         // 0. Initialize the Processor FIRST
-        FormulaProcessor.Initialize("Data/System/combat_formulas.json");
+        FormulaProcessor.Initialize("Data/System/formulas.json");
 
         var registry = new EntityRegistry();
         var controller = new Controller(registry);
