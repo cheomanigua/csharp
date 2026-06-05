@@ -1,0 +1,48 @@
+{
+  "Trades": [
+    {
+      "Name": "Monk",
+      "RoomWeights": { "Chapel": 70, "Cloister": 20, "Refectorium": 10, "Kitchen": 0 }
+    },
+    {
+      "Name": "Cook",
+      "RoomWeights": { "Kitchen": 80, "Refectorium": 15, "Chapel": 5, "Cloister": 0 }
+    },
+    {
+      "Name": "Blacksmith",
+      "RoomWeights": { "Kitchen": 5, "Refectorium": 10, "Chapel": 5, "Cloister": 5 }
+    },
+    {
+      "Name": "Knight",
+      "RoomWeights": { "Cloister": 40, "Chapel": 40, "Refectorium": 15, "Kitchen": 5 }
+    }
+  ],
+  "StandardActions": ["Rest", "Sleep", "Eat", "Drink", "Walk"],
+  "GrievanceTemplates": [
+    {
+      "Type": "Theft",
+      "Description": "stole valuable supplies from",
+      "BaseBondModifier": -40
+    },
+    {
+      "Type": "Dispute",
+      "Description": "had a heated argument over boundaries with",
+      "BaseBondModifier": -60
+    },
+    {
+      "Type": "Betrayal",
+      "Description": "revealed a dark secret about",
+      "BaseBondModifier": -90
+    }
+  ],
+  "RoomTypes": [
+    {"Type": "Chapel", "Tags": ["Holy"]},
+    {"Type": "Kitchen", "Tags": ["Fire"]},
+    {"Type": "Refectorium", "Tags": ["Meal"]},
+    {"Type": "Cloister", "Tags": ["Peace"]}
+  ],
+  "ItemTypes": [
+    {"Name": "Dagger", "Tags": ["Lethal"]},
+    {"Name": "Poison", "Tags": ["Lethal"]}
+  ]
+}

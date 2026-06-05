@@ -1,0 +1,3 @@
+Name,Faction,Type,ClassKey,X,Y,Heading,Speed,RadarRange,SonarRange,IsActiveEmission,MaxMissiles,MaxTorpedos,MaxCIWS,CurrentMissiles,CurrentTorpedos,CurrentCIWS,SpriteKey,ZIndex,Doctrine
+USS Pasadena,NATO,,LosAngelesClass,120,23,180,6,,,,,,,,,,,,
+USS Enterprise,NATO,,LosAngelesClass,20,20,20,20,,,,,,,,,,,,

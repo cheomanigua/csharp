@@ -1,0 +1,28 @@
+{
+  "Blueprints": {
+    "USSPasadena": {
+      "Identity": {
+        "Name": "USS Pasadena",
+        "Faction": "NATO",
+        "Type": "Submarine"
+      },
+      "ClassKey": "LosAngelesClass",
+      "Position": {"X": 120.0, "Y": 23.0},
+      "Velocity": {"HeadingDegrees": 180.0, "SpeedKnots": 6.0},
+      "Sensors": {"IsActiveEmission": false},
+      "WeaponInventory": {"AntiShipMissiles": 0, "Torpedos": 24, "PointDefenseAmmo": 0}
+    },
+    "USSEnterprise": {
+      "Identity": {
+        "Name": "USS Enterprise",
+        "Faction": "NATO",
+        "Type": "Submarine"
+      },
+      "ClassKey": "LosAngelesClass",
+      "Position": {"X": 20.0, "Y": 20.0},
+      "Velocity": {"HeadingDegrees": 20.0, "SpeedKnots": 20.0},
+      "Sensors": {"IsActiveEmission": false},
+      "WeaponInventory": {"AntiShipMissiles": 0, "Torpedos": 24, "PointDefenseAmmo": 0}
+    }
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "Id": "move_action",
+    "Name": "Move",
+    "Type": "Movement",
+    "Cost": 0
+  },
+  {
+    "Id": "attack_action",
+    "Name": "Standard Attack",
+    "Type": "Combat",
+    "Cost": 10
+  },
+  {
+    "Id": "heavy_strike_action",
+    "Name": "Heavy Strike",
+    "Type": "Combat",
+    "Cost": 25
+  },
+  {
+    "Id": "block_action",
+    "Name": "Shield Block",
+    "Type": "Combat",
+    "Cost": 5
+  },
+  {
+    "Id": "quick_shot_action",
+    "Name": "Quick Shot",
+    "Type": "Ranged",
+    "Cost": 12
+  },
+  {
+    "Id": "cast_fireball_action",
+    "Name": "Cast Fireball",
+    "Type": "Magic",
+    "Cost": 20
+  },
+  {
+    "Id": "cast_mirror_image_action",
+    "Name": "Mirror Image",
+    "Type": "Magic",
+    "Cost": 35
+  }
+]

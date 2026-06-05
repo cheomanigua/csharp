@@ -1,0 +1,16 @@
+{
+  "InputBindings": {},
+  "Blueprints": {
+    "LosAngelesClass": {
+      "Identity": {
+        "ClassName": "LosAngelesClass",
+        "Type": "Submarine"
+      },
+      "Sensors": {"RadarRangeNM": 0.0, "SonarRangeNM": 10.0},
+      "WeaponInventory": {"AntiShipMissiles": 0, "Torpedos": 24, "PointDefenseAmmo": 0},
+      "Renderable": {"SpriteKey": "icon_sub_nato", "ZIndex": 1},
+      "AiIntel": {"DoctrineKey": "SilentHunterPasive"}
+    }
+  },
+  "Doctrines": {}
+}

@@ -1,0 +1,83 @@
+{
+  "InputBindings": {
+    "W": "CameraPanUpCommand",
+    "S": "CameraPanDownCommand",
+    "A": "CameraPanLeftCommand",
+    "D": "CameraPanRightCommand",
+    "Space": "PauseSimulationCommand",
+    "Alpha1": "SelectTimeScale1xCommand",
+    "Alpha2": "SelectTimeScale5xCommand",
+    "Alpha3": "SelectTimeScale30xCommand"
+  },
+  "Blueprints": {
+    "USSDonaldCook": {
+      "Identity": {
+        "Name": "USS Donald Cook",
+        "Faction": "NATO",
+        "Type": "SurfaceShip"
+      },
+      "Position": { "X": 142.5, "Y": 34.12 },
+      "Velocity": { "HeadingDegrees": 90.0, "SpeedKnots": 0.0 },
+      "Sensors": { "RadarRangeNM": 0.0, "SonarRangeNM": 0.0, "IsActiveEmission": false },
+      "WeaponInventory": { "AntiShipMissiles": 8, "Torpedos": 6, "PointDefenseAmmo": 0 },
+      "Renderable": { "SpriteKey": "icon_default", "ZIndex": 1 },
+      "AiIntel": { "DoctrineKey": "StandardPassive" }
+    },
+    "RedBomberFlightA": {
+      "Identity": {
+        "Name": "Red Bomber Flight A",
+        "Faction": "OPFOR",
+        "Type": "Aircraft"
+      },
+      "Position": { "X": 185.0, "Y": 95.4 },
+      "Velocity": { "HeadingDegrees": 210.0, "SpeedKnots": 0.0 },
+      "Sensors": { "RadarRangeNM": 0.0, "SonarRangeNM": 0.0, "IsActiveEmission": false },
+      "WeaponInventory": { "AntiShipMissiles": 2, "Torpedos": 0, "PointDefenseAmmo": 0 },
+      "Renderable": { "SpriteKey": "icon_default", "ZIndex": 1 },
+      "AiIntel": { "DoctrineKey": "StandardPassive" }
+    },
+    "USSPasadena": {
+      "Identity": {
+        "Name": "USS Pasadena",
+        "Faction": "NATO",
+        "Type": "Submarine"
+      },
+      "Position": { "X": 120.15, "Y": 30.85 },
+      "Velocity": { "HeadingDegrees": 180.0, "SpeedKnots": 0.0 },
+      "Sensors": { "RadarRangeNM": 0.0, "SonarRangeNM": 0.0, "IsActiveEmission": false },
+      "WeaponInventory": { "AntiShipMissiles": 0, "Torpedos": 12, "PointDefenseAmmo": 0 },
+      "Renderable": { "SpriteKey": "icon_default", "ZIndex": 1 },
+      "AiIntel": { "DoctrineKey": "StandardPassive" }
+    },
+    "HMSInvincible": {
+      "Identity": {
+        "Name": "HMS Invincible",
+        "Faction": "NATO",
+        "Type": "Submarine"
+      },
+      "Position": { "X": 121.0, "Y": 29.23 },
+      "Velocity": { "HeadingDegrees": 90.0, "SpeedKnots": 0.0 },
+      "Sensors": { "RadarRangeNM": 0.0, "SonarRangeNM": 0.0, "IsActiveEmission": false },
+      "WeaponInventory": { "AntiShipMissiles": 0, "Torpedos": 0, "PointDefenseAmmo": 0 },
+      "Renderable": { "SpriteKey": "icon_default", "ZIndex": 1 },
+      "AiIntel": { "DoctrineKey": "StandardPassive" }
+    }
+  },
+  "Doctrines": {
+    "StandardDefensiveScreen": {
+      "TriggerCondition": "IncomingMissileDetected",
+      "DetectionThresholdNM": 20.0,
+      "IssuedCommand": "ActivatePointDefenseCommand"
+    },
+    "LongRangeAntiShippingStrike": {
+      "TriggerCondition": "SurfaceContactDetected",
+      "DetectionThresholdNM": 150.0,
+      "IssuedCommand": "LaunchSalvoCommand"
+    },
+    "SilentHunterPassive": {
+      "TriggerCondition": "ActiveSonarPingDetected",
+      "DetectionThresholdNM": 60.0,
+      "IssuedCommand": "ExecuteEvasiveManeuverCommand"
+    }
+  }
+}

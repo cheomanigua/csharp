@@ -1,0 +1,47 @@
+[
+  {
+    "Id": "human_warrior",
+    "Race": "Human",
+    "Class": "Warrior",
+    "Health": 120,
+    "Mana": 20,
+    "Skills": ["TwoHandedWeapons", "Archery"],
+    "EquippedWeapon": "steel_claymore"
+  },
+  {
+    "Id": "orc_berserker",
+    "Race": "Orc",
+    "Class": "Warrior",
+    "Health": 180,
+    "Mana": 0,
+    "Skills": ["OneHandedWeapons"],
+    "EquippedWeapon": "iron_sword"
+  },
+  {
+    "Id": "elf_mage",
+    "Race": "Human",
+    "Class": "Wizard",
+    "Health": 85,
+    "Mana": 150,
+    "Skills": ["Illusion"],
+    "EquippedWeapon": "elder_staff"
+  },
+  {
+    "Id": "dwarf_guardian",
+    "Race": "Orc",
+    "Class": "Warrior",
+    "Health": 160,
+    "Mana": 15,
+    "Skills": ["OneHandedWeapons"],
+    "EquippedWeapon": "iron_sword"
+  },
+  {
+    "Id": "shadow_blade",
+    "Race": "Human",
+    "Class": "Warrior",
+    "Health": 100,
+    "Mana": 40,
+    "Skills": ["Archery", "Illusion"],
+    "EquippedWeapon": "assassins_dagger"
+  }
+]

@@ -1,0 +1,5 @@
+{
+  "1": { "Name": "OneHandedWeapons", "AttributeScale": "Strength" },
+  "2": { "Name": "Archery", "AttributeScale": "Strength" },
+  "3": { "Name": "Illusion", "AttributeScale": "Intelligence" }
+}

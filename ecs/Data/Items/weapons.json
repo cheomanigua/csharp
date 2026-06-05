@@ -1,0 +1,24 @@
+{
+  "12": { 
+    "Name": "Spider-Fang Gladius", 
+    "Damage": 14, 
+    "WeaponType": "OneHandedMelee", 
+		"EnabledActions": ["MeleeStrike"],
+    "OnHitEffects": [
+      {
+        "Tag": "PoisonStatusComponent",
+        "Properties": { "DamagePerTick": 8.0, "TotalDuration": 5.0, "TickInterval": 1.0 }
+      }
+    ]
+  },
+  "25": {
+    "Name": "Flaming Brand",
+    "Damage": 10,
+    "OnHitEffects": [
+      {
+        "Tag": "FireStatusComponent",
+        "Properties": { "DamagePerTick": 5.0, "TotalDuration": 3.0 }
+      }
+    ]
+  }
+}

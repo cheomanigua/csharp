@@ -1,0 +1,30 @@
+[
+  {
+    "Id": "OneHandedWeapons",
+    "Name": "One-Handed Mastery",
+    "DamageMultiplier": 1.25,
+    "ResourceCost": 0,
+    "Range": 1.5
+  },
+  {
+    "Id": "TwoHandedWeapons",
+    "Name": "Two-Handed Mastery",
+    "DamageMultiplier": 2.50,
+    "ResourceCost": 0,
+    "Range": 2.0
+  },
+  {
+    "Id": "Archery",
+    "Name": "Eagle Eye Archery",
+    "DamageMultiplier": 1.10,
+    "ResourceCost": 5,
+    "Range": 18.0
+  },
+  {
+    "Id": "Illusion",
+    "Name": "Mirror Trick",
+    "DamageMultiplier": 0.00,
+    "ResourceCost": 25,
+    "Range": 8.0
+  }
+]

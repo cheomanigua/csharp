@@ -1,0 +1,38 @@
+[
+  {
+    "Id": "iron_sword",
+    "Name": "Iron Sword",
+    "Damage": 15,
+    "Weight": 5.5
+  },
+  {
+    "Id": "steel_claymore",
+    "Name": "Steel Claymore",
+    "Damage": 28,
+    "Weight": 12.0
+  },
+  {
+    "Id": "yew_longbow",
+    "Name": "Yew Longbow",
+    "Damage": 18,
+    "Weight": 2.5
+  },
+  {
+    "Id": "elder_staff",
+    "Name": "Elder Staff",
+    "Damage": 5,
+    "Weight": 3.0
+  },
+  {
+    "Id": "crystal_wand",
+    "Name": "Crystal Wand",
+    "Damage": 3,
+    "Weight": 1.2
+  },
+  {
+    "Id": "assassins_dagger",
+    "Name": "Assassin's Dagger",
+    "Damage": 10,
+    "Weight": 1.5
+  }
+]

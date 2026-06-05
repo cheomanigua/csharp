@@ -1,0 +1,18 @@
+{
+   "agoiru" : {
+      "Endurance" : 5,
+      "Intelligence" : 5,
+      "Health" : 9,
+      "RaceName" : "agoiru",
+      "Strength" : 4,
+      "Dexterity" : 4
+   },
+   "goblin" : {
+      "RaceName" : "goblin",
+      "Strength" : 5,
+      "Dexterity" : 7,
+      "Endurance" : 7,
+      "Intelligence" : 5,
+      "Health" : 10
+   }
+}

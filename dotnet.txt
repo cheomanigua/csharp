@@ -1,0 +1,5 @@
+Create C# project
+dotnet new console -n MyProject
+
+Run project
+dotnet run
