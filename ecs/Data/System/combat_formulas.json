@@ -1,5 +1,15 @@
 {
   "MeleeStrike": "BaseWeaponDamage + WeaponBonus + ((Strength + GearStrengthBonus + TemporaryStrengthBonus) * 1.5) + ((SkillBonus + TemporarySkillBonus) * 2.0)",
   "RangedShot": "BaseWeaponDamage + WeaponBonus + ((Strength + GearStrengthBonus + TemporaryStrengthBonus) * 0.8) + ((SkillBonus + TemporarySkillBonus) * 2.5)",
-  "SpellInvocation": "((Intelligence + GearIntelligenceBonus + TemporaryIntelligenceBonus) * 2.5) + ((BaseWeaponDamage + WeaponBonus) * 0.5)"
+  "SpellInvocation": "((Intelligence + GearIntelligenceBonus + TemporaryIntelligenceBonus) * 2.5) + ((BaseWeaponDamage + WeaponBonus) * 0.5)",
+  "InitStats": {
+    "Operations": [
+      { "Type": "Add", "Target": "Strength", "Source": "BaseStr" },
+      { "Type": "Add", "Target": "Strength", "Source": "BonusStr" },
+      { "Type": "Add", "Target": "Intelligence", "Source": "BaseInt" },
+      { "Type": "Add", "Target": "Intelligence", "Source": "BonusInt" },
+      { "Type": "Add", "Target": "Health", "Source": "BaseHealth" },
+      { "Type": "Add", "Target": "Mana", "Source": "BaseMana" }
+    ]
+  }
 }

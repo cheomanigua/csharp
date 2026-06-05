@@ -1,7 +1,7 @@
-{
+[{
   "EntityId": 42,
   "Name": "Thrall",
   "Race": "Orc",
   "Class": "Warrior",
   "EquippedWeaponId": 12
-}
+}]
