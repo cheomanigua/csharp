@@ -10,6 +10,7 @@ public class Controller
     private readonly EntityRegistry _registry;
     private readonly Dictionary<string, RaceData> _races;
     private readonly Dictionary<string, ClassData> _classes;
+    private readonly Dictionary<string, SkillData> _skills;
     private readonly Dictionary<int, WeaponData> _weaponLookup;
 
     // DOD optimization: Replace Dictionaries with fixed-size arrays.
@@ -17,6 +18,7 @@ public class Controller
     private const int MaxEntities = 1024;
     private readonly string[] _names = new string[MaxEntities];
     private readonly string[] _weaponNames = new string[MaxEntities];
+    private readonly string[] _skillNames = new string[MaxEntities];
 
     public Controller(EntityRegistry registry)
     {
@@ -26,11 +28,13 @@ public class Controller
         {
             _names[i] = "Unknown";
             _weaponNames[i] = "Unarmed";
+            _skillNames[i] = "None";
         }
         
         // Load data with basic validation
         _races = LoadData<Dictionary<string, RaceData>>("Data/Character/races.json");
         _classes = LoadData<Dictionary<string, ClassData>>("Data/Character/classes.json");
+        _skills = LoadData<Dictionary<string, SkillData>>("Data/Character/skills.json");
         _weaponLookup = LoadData<Dictionary<int, WeaponData>>("Data/Items/weapons.json");
     }
 
@@ -66,6 +70,9 @@ public class Controller
 
             _registry.RegisterStats(dto.EntityId, in stats);
 
+            string skillName = _skills.TryGetValue(charClass.PrimarySkillIndex.ToString(), out var skill) ? skill.Name : "None";
+            _skillNames[dto.EntityId] = skillName;
+
             if (dto.EntityId < MaxEntities)
             {
                 _names[dto.EntityId] = dto.Name;
@@ -82,10 +89,13 @@ public class Controller
 
     public string GetWeaponName(int entityId) => 
         (entityId >= 0 && entityId < MaxEntities) ? _weaponNames[entityId] : "Unarmed";
+    public string GetSkillName(int entityId) =>
+        (entityId >= 0 && entityId < MaxEntities) ? _skillNames[entityId] : "None";
 }
 
 public record RaceData(int RaceStr, int RaceInt);
 public record ClassData(int ClassHealth, int ClassMana, int ClassStr, int ClassInt, int PrimarySkillIndex);
+public record SkillData(string Name, string AttributeScale);
 public record WeaponData(string Name, int Damage);
 
 public class NPCBlueprintDto

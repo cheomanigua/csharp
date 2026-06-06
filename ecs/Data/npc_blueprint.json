@@ -1,7 +1,16 @@
-[{
-  "EntityId": 42,
+[
+  {
+  "EntityId": 1,
   "Name": "Thrall",
   "Race": "Orc",
   "Class": "Warrior",
   "EquippedWeaponId": 12
-}]
+  },
+  {
+  "EntityId": 2,
+  "Name": "Sergio",
+  "Race": "Human",
+  "Class": "Wizard",
+  "EquippedWeaponId": 25
+  }
+]

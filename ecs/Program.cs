@@ -28,9 +28,10 @@ class Program
             // 3. Resolve metadata using the dynamic ID
             string name = controller.GetName(entityId);
             string weaponName = controller.GetWeaponName(entityId);
+            string skillName = controller.GetSkillName(entityId);
 
             // 4. Render (restored functionality)
-            View.DisplayCharacter(in stats, name, weaponName);
+            View.DisplayCharacter(in stats, name, weaponName, skillName);
         }
     }
 }
