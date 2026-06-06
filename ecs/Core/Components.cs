@@ -20,3 +20,12 @@ public struct WeaponComponent
     [FieldOffset(4)] public int WeaponId;
     [FieldOffset(8)] public int Damage;
 }
+
+// Added MetadataComponent to group display-only strings together.
+// This allows you to pass a single struct to the View instead of multiple strings.
+public struct MetadataComponent
+{
+    public string Name;
+    public string WeaponName;
+    public string SkillName;
+}
