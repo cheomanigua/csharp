@@ -1,6 +1,3 @@
 # Ignore all bin and obj directories at any depth
 bin/
 obj/
-
-# Ignore all .csproj files at any depth
-*.csproj
