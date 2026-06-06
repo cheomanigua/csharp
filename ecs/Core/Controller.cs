@@ -56,8 +56,8 @@ public class Controller
 
             // DEBUG: Verify values before passing to FormulaProcessor
             Console.WriteLine($"DEBUG: Loading {dto.Name}. Class: {dto.Class}, Race: {dto.Race}");
-            Console.WriteLine($"DEBUG: Class BaseStr: {charClass.BaseStr}, Race BonusStr: {race.BonusStr}");
-            Console.WriteLine($"DEBUG: Class BaseInt: {charClass.BaseInt}, Race BonusInt: {race.BonusInt}");
+            Console.WriteLine($"DEBUG: Class Str: {charClass.ClassStr}, Race Str: {race.RaceStr}");
+            Console.WriteLine($"DEBUG: Class Int: {charClass.ClassInt}, Race Int: {race.RaceInt}");
 
             var stats = new CharacterStats { EntityId = dto.EntityId };
             
@@ -84,8 +84,8 @@ public class Controller
         (entityId >= 0 && entityId < MaxEntities) ? _weaponNames[entityId] : "Unarmed";
 }
 
-public record RaceData(int BonusStr, int BonusInt);
-public record ClassData(int BaseHealth, int BaseMana, int BaseStr, int BaseInt, int PrimarySkillIndex);
+public record RaceData(int RaceStr, int RaceInt);
+public record ClassData(int ClassHealth, int ClassMana, int ClassStr, int ClassInt, int PrimarySkillIndex);
 public record WeaponData(string Name, int Damage);
 
 public class NPCBlueprintDto

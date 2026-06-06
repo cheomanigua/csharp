@@ -1,8 +1,8 @@
 {
   "Warrior": { 
-      "BaseHealth": 150, "BaseMana": 20, "BaseStr": 10, "BaseInt": 5, "PrimarySkillIndex": 1 
+      "ClassHealth": 150, "ClassMana": 20, "ClassStr": 10, "ClassInt": 5, "PrimarySkillIndex": 1 
   },
   "Wizard": { 
-      "BaseHealth": 80, "BaseMana": 120, "BaseStr": 5, "BaseInt": 15, "PrimarySkillIndex": 3 
+      "ClassHealth": 80, "ClassMana": 120, "ClassStr": 5, "ClassInt": 15, "PrimarySkillIndex": 3 
   }
 }

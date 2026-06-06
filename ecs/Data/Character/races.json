@@ -1,4 +1,4 @@
 {
-  "Human": { "BonusStr": 2, "BonusInt": 5 },
-  "Orc": { "BonusStr": 10, "BonusInt": 1 }
+  "Human": { "RaceStr": 2, "RaceInt": 5 },
+  "Orc": { "RaceStr": 10, "RaceInt": 1 }
 }
