@@ -15,7 +15,7 @@ public class CharacterViewAdapter
     /// Fetches the necessary data from the registries, transforms it into 
     /// a UI-agnostic DTO, and updates the provided view.
     /// </summary>
-    public void UpdateView(int entityId, ICharacterView view)
+    public void UpdateView(int entityId, IGameView view)
     {
         // 1. O(1) Fetch from registries
         // Using 'ref readonly' to avoid copying registry data unnecessarily
