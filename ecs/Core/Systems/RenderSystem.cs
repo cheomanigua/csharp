@@ -4,10 +4,10 @@ namespace Core.Systems;
 
 public class RenderSystem
 {
-    private readonly CharacterViewAdapter _adapter;
+    private readonly GameViewAdapter _adapter;
     private readonly IGameView _view;
 
-    public RenderSystem(CharacterViewAdapter adapter, IGameView view)
+    public RenderSystem(GameViewAdapter adapter, IGameView view)
     {
         _adapter = adapter;
         _view = view;

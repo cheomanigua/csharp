@@ -1,6 +1,6 @@
 namespace Core;
 
-public class ConsoleCharacterView : IGameView
+public class ConsoleGameView : IGameView
 {
     public void Render(in CharacterSheetDto data)
     {

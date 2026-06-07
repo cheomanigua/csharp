@@ -15,7 +15,7 @@ public class EngineDriver
     public EngineDriver(IGameView view)
     {
         _controller = new Controller(_registry, _metaRegistry);
-        _renderSystem = new RenderSystem(new CharacterViewAdapter(_registry, _metaRegistry), view);
+        _renderSystem = new RenderSystem(new GameViewAdapter(_registry, _metaRegistry), view);
     }
 
     // Restored this method so the game can initialize blueprints

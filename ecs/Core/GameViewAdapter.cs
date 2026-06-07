@@ -1,11 +1,11 @@
 namespace Core;
 
-public class CharacterViewAdapter
+public class GameViewAdapter
 {
     private readonly EntityRegistry _registry;
     private readonly MetadataRegistry _meta;
 
-    public CharacterViewAdapter(EntityRegistry registry, MetadataRegistry meta)
+    public GameViewAdapter(EntityRegistry registry, MetadataRegistry meta)
     {
         _registry = registry;
         _meta = meta;

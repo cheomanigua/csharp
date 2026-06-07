@@ -18,8 +18,8 @@ class Program
         controller.LoadNPCFromJson("Data/npc_blueprint.json");
         
         // Use the Adapter
-        var adapter = new CharacterViewAdapter(registry, metaRegistry);
-        var view = new ConsoleCharacterView();
+        var adapter = new GameViewAdapter(registry, metaRegistry);
+        var view = new ConsoleGameView();
         var activeIds = registry.GetActiveEntities();
         
         foreach (int entityId in activeIds)
