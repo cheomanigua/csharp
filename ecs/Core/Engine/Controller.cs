@@ -25,6 +25,10 @@ namespace Core
         private readonly Dictionary<string, ClassData> _classes;
         private readonly Dictionary<string, SkillData> _skills;
         private readonly Dictionary<int, WeaponData> _weaponLookup;
+        private List<NPCBlueprintDto> _blueprints = new();
+				public IReadOnlyDictionary<string, RaceData> Races => _races;
+				public IReadOnlyDictionary<string, ClassData> Classes => _classes;
+				public IReadOnlyList<NPCBlueprintDto> Blueprints => _blueprints;
 
         public Controller(EntityRegistry registry, MetadataRegistry metaRegistry)
         {
@@ -48,6 +52,7 @@ namespace Core
         public void LoadNPCFromJson(string filePath)
         {
             string json = File.ReadAllText(filePath);
+						_blueprints = JsonSerializer.Deserialize<List<NPCBlueprintDto>>(json) ?? new();
             var npcs = JsonSerializer.Deserialize<List<NPCBlueprintDto>>(json);
 
             if (npcs == null) return;
@@ -58,7 +63,6 @@ namespace Core
                 if (!_classes.TryGetValue(dto.Class, out var charClass)) continue;
 
                 var stats = new CharacterStats { EntityId = dto.EntityId };
-                FormulaProcessor.ExecuteInitialization("InitStats", ref stats, charClass, race);
                 _registry.RegisterStats(dto.EntityId, in stats);
 
                 string skillName = _skills.TryGetValue(charClass.PrimarySkillIndex.ToString(), out var skill) 

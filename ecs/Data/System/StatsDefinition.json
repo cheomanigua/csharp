@@ -1,0 +1,8 @@
+{
+  "Stats": [
+    { "Name": "Strength", "Default": 0 },
+    { "Name": "Intelligence", "Default": 0 },
+    { "Name": "Health", "Default": 0 },
+    { "Name": "Mana", "Default": 0 }
+  ]
+}

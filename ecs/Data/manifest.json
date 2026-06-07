@@ -1,7 +1,7 @@
 {
   "ConfigModules": [
     "System/action_mappings.json",
-    "System/combat_formulas.json",
+    "System/formulas.json",
     "Character/races.json",
     "Character/classes.json",
     "Character/skills.json",
