@@ -1,26 +1,64 @@
 {
-	"501": { 
+  "501": { 
     "Name": "Ring of Giant Strength", 
     "GrantedComponents": [
       {
         "Tag": "AttributeModifierComponent",
         "Modifiers": [
           { "Target": "Strength", "Value": 5.0 },
-          { "Target": "Illusion", "Value": -2.0 }
+          { "Target": "OneHandedWeapons", "Value": 1.0 }
+        ]
+      }
+    ]
+	},
+  "502": { 
+    "Name": "Ring of Wizard Zealot", 
+    "GrantedComponents": [
+      {
+        "Tag": "AttributeModifierComponent",
+        "Modifiers": [
+          { "Target": "Intelligence", "Value": 5.0 },
+          { "Target": "Strength", "Value": -2.0 }
         ]
       }
     ]
   },
   "703": { 
     "Name": "Mage-Slayer's Signet", 
-    "Slot": "Finger", 
     "GrantedComponents": [
       {
-        "Tag": "AttributeStealComponent",
-        "Properties": { 
-          "SiphonPercentage": 0.20,
-          "SourceTarget": "Health",
-          "DestinationTarget": "Mana"
+        "Tag": "AttributeModifierComponent",
+        "Modifiers": [
+          { "Target": "Health", "Value": -20.0 },
+          { "Target": "Mana", "Value": 20.0 }
+        ]
+      }
+    ]
+  },
+  "704": { 
+    "Name": "Ring of Healing",
+    "GrantedComponents": [
+      {
+        "Tag": "MagicActionsComponent",
+        "Properties": {
+          "Target": "Self",
+          "Effect": "Restore",
+          "Stat": "Health",
+          "Value": "20"
+        }
+      }
+    ]
+  },
+  "705": { 
+    "Name": "Scroll of Bolt Ray",
+    "GrantedComponents": [
+      {
+        "Tag": "MagicActionsComponent",
+        "Properties": {
+          "Target": "Ranged",
+          "Effect": "Damage",
+          "Stat": "Health",
+          "Value": "15"
         }
       }
     ]

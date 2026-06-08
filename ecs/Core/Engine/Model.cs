@@ -1,25 +1,21 @@
-using System.Collections.Generic;
+namespace Core.Engine;
 
-namespace Core;
+// 1. Used for AttributeModifierComponent
+public record ModifierDto(string Target, float Value);
 
-// --- Presentation Models (View Layer) ---
+// 2. Used for AttributeStealComponent
+public record StealPropertiesDto(float SiphonPercentage, string SourceTarget, string DestinationTarget);
 
-// Data used by the View to display a character
-public class NPCModel
-{
-    public string Name { get; set; } = string.Empty;
-    public CharacterStats Stats { get; set; }
-    public string WeaponName { get; set; } = string.Empty;
-}
+// 3. The main DTO that mirrors your JSON structure
+public record GrantedComponentDto(
+    string Tag, 
+    List<ModifierDto>? Modifiers,     // Matches "Modifiers": [...] in JSON
+    StealPropertiesDto? Properties    // Matches "Properties": {...} in JSON
+);
 
-// --- Blueprint/Data Models (Initialization Layer) ---
-
-// Represents the schema for accessories.json
-public record AccessoryData(string Name, string Slot, List<GrantedComponentDto> GrantedComponents);
-
-// Represents specific effects granted by items
-public record GrantedComponentDto(string Tag, List<AttributeModifierDto>? Modifiers, Dictionary<string, float>? Properties);
-
-// Used for stat modification logic
-public record AttributeModifierDto(string Target, float Value);
-
+// 4. The main Item record
+public record AccessoryData(
+    string Name, 
+    string? Slot, 
+    List<GrantedComponentDto> GrantedComponents
+);

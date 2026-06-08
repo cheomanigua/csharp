@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core.Engine;
 
 namespace Core;
 
@@ -39,6 +40,11 @@ public class EntityRegistry
     /// </summary>
     public void EquipItem(int entityId, int itemId)
     {
+        if (!_accessoryDatabase.ContainsKey(itemId))
+        {
+            DebugLog.Log($"EquipItem: FAILED. Item {itemId} does not exist in database.");
+            return; 
+        }
         ref var equipment = ref _equipmentSieve.Get(entityId);
         var items = new List<int>(equipment.EquippedItemIds ?? Array.Empty<int>()) { itemId };
         equipment.EquippedItemIds = items.ToArray();
@@ -53,28 +59,39 @@ public class EntityRegistry
         {
             int entityId = _activeEntities[i];
             ref var stat = ref _statsSieve.Get(entityId);
-            if (stat.IsDirty) 
+            if (!stat.IsDirty) continue;
+
+            var equipment = _equipmentSieve.Get(entityId);
+            
+            // Recalculate stats based on equipment
+            foreach (var itemId in (equipment.EquippedItemIds ?? Array.Empty<int>()))
             {
-                var equipment = _equipmentSieve.Get(entityId);
-                foreach (var itemId in (equipment.EquippedItemIds ?? Array.Empty<int>()))
+                if (_accessoryDatabase.TryGetValue(itemId, out var item))
                 {
-                    if (_accessoryDatabase.TryGetValue(itemId, out var item))
+                    foreach (var comp in item.GrantedComponents)
                     {
-                        foreach (var comp in item.GrantedComponents)
+                        switch (comp.Tag)
                         {
-                            if (comp.Tag == "AttributeModifierComponent" && comp.Modifiers != null)
-                            {
-                                foreach (var mod in comp.Modifiers)
+                            case "AttributeModifierComponent":
+                                if (comp.Modifiers != null)
                                 {
-                                    if (Enum.TryParse<StatType>(mod.Target, out var type))
-                                        stat.Values[(int)type] += (int)mod.Value;
+                                    foreach (var mod in comp.Modifiers)
+                                    {
+                                        if (Enum.TryParse<StatType>(mod.Target, out var type))
+                                            stat.Values[(int)type] += (int)mod.Value;
+                                    }
                                 }
-                            }
+                                break;
+
+                            case "MagicActionsComponent":
+                                // Logic for processing magic effects goes here
+                                DebugLog.Log($"Processing magic action for {item.Name} on entity {entityId}");
+                                break;
                         }
                     }
                 }
-                stat.IsDirty = false;
             }
+            stat.IsDirty = false;
         }
     }
 }
