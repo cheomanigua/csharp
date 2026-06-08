@@ -4,13 +4,13 @@
   "Name": "Thrall",
   "Race": "Orc",
   "Class": "Warrior",
-  "EquippedWeaponId": 12
+  "EquippedItemId": 500
   },
   {
   "EntityId": 2,
   "Name": "Sergio",
   "Race": "Human",
   "Class": "Wizard",
-  "EquippedWeaponId": 25
+  "EquippedItemId": 708
   }
 ]

@@ -5,8 +5,7 @@
     "Character/races.json",
     "Character/classes.json",
     "Character/skills.json",
-    "Balance/status_effects.json",
     "Items/weapons.json",
-    "Items/accessories.json"
+    "Items/master_items.json"
   ]
 }

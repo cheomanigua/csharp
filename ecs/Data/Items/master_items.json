@@ -1,0 +1,40 @@
+{
+  "501": { 
+    "Name": "Leather Armor", 
+    "Categories": { "Type": "Armor", "Execution": "Immediate" },
+    "GrantedComponents": [
+      { "Tag": "AttributeComponent", "Properties": { "Target": "Armor", "Value": "5.0" } }
+    ]
+  },
+  "709": { 
+    "Name": "Acid-Dipped Dagger", 
+    "Categories": { "Type": "Weapon", "Execution": "Immediate" },
+    "GrantedComponents": [
+      { "Tag": "WeaponComponent", "Properties": { "Damage": "8.0", "DamageType": "Physical" } },
+      { "Tag": "MagicComponent", "Properties": { "Trigger": "OnHit", "Effect": "Corrode", "Value": "2.0", "Duration": "Permanent" } }
+    ]
+  },
+  "800": { 
+    "Name": "Ring of Strength", 
+    "Categories": { "Type": "Accessory", "Execution": "Immediate" },
+    "GrantedComponents": [
+      { "Tag": "AttributeComponent", "Properties": { "Target": "Strength", "Value": "3.0" } }
+    ]
+  },
+  "900": { 
+    "Name": "Potion of Healing", 
+    "Categories": { "Type": "Potion", "Execution": "Immediate" },
+    "GrantedComponents": [
+      { "Tag": "ConsumableComponent", "Properties": { "Charges": "1" } },
+      { "Tag": "MagicComponent", "Properties": { "Trigger": "OnUse", "Effect": "Restore", "Stat": "Health", "Value": "50.0" } }
+    ]
+  },
+  "950": { 
+    "Name": "Scroll of Frost Bolt", 
+    "Categories": { "Type": "Scroll", "Execution": "Immediate" },
+    "GrantedComponents": [
+      { "Tag": "ConsumableComponent", "Properties": { "Charges": "1" } },
+      { "Tag": "MagicComponent", "Properties": { "Trigger": "OnUse", "Effect": "Damage", "Value": "25.0", "DamageType": "Frost", "SecondaryEffect": "Slow" } }
+    ]
+  }
+}

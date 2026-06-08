@@ -1,41 +1,43 @@
 ﻿using Core;
 using Core.Commands;
-using Core.Engine;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System;
 
 class Program
 {
     static void Main(string[] args)
     {
-        // Enable debugging globally across the entire project
+        // Enable debugging globally
         DebugLog.Enabled = true;
 
         // 0. Initialize the Processor
         FormulaProcessor.Initialize("Data/System/formulas.json");
         
-        // 1. Prepare dependencies
+        // 1. Load the Manifest and Item Database
+        var manifest = LoadManifest("Data/manifest.json");
+        var itemDb = LoadItemDatabaseFromManifest(manifest);
+
+        // 2. Prepare dependencies
         var view = new ConsoleGameView();
-        var accessoryDb = LoadAccessoryDatabase("Data/Items/accessories.json");
+        
+        // 3. Initialize the Engine 
+        var engine = new EngineDriver(view, itemDb);
 
-        // 2. Initialize the Engine 
-        var engine = new EngineDriver(view, accessoryDb);
-
-        // 3. Load data
+        // 4. Load game data
         engine.LoadGameData("Data/npc_blueprint.json");
 
-        // 4. Queue initialization commands
+        // 5. Queue initialization commands
         engine.AddCommand(new GameCommand { Type = CommandType.InitStats, EntityId = 1 });
         engine.AddCommand(new GameCommand { Type = CommandType.InitStats, EntityId = 2 });
 
-        // 5. Queue equip command
-        // This will now find 502 in the dictionary and succeed!
-        engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 1, TargetId = 501 });
-        engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 2, TargetId = 502 });
-        engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 2, TargetId = 703 });
+        // 6. Queue equip commands
+        engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 1, TargetId = 500 });
+        engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 2, TargetId = 500 });
+        engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 2, TargetId = 800 });
 
-        // 6. Game Loop
+        // 7. Game Loop
         bool running = true;
         while (running)
         {
@@ -44,28 +46,39 @@ class Program
         }
     }
 
-    private static Dictionary<int, AccessoryData> LoadAccessoryDatabase(string path)
+    private static Manifest LoadManifest(string path)
     {
-        if (!File.Exists(path))
-        {
-            DebugLog.Log($"[ERROR] Accessory database file not found at: {path}");
-            return new Dictionary<int, AccessoryData>();
-        }
+        string json = File.ReadAllText(path);
+        return JsonSerializer.Deserialize<Manifest>(json) ?? new Manifest(new List<string>());
+    }
 
-        try
+    private static Dictionary<int, AccessoryData> LoadItemDatabaseFromManifest(Manifest manifest)
+    {
+        var masterDb = new Dictionary<int, AccessoryData>();
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+        foreach (var modulePath in manifest.ConfigModules)
         {
-            string json = File.ReadAllText(path);
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            
-            var db = JsonSerializer.Deserialize<Dictionary<int, AccessoryData>>(json, options);
-            
-            DebugLog.Log($"[SUCCESS] Loaded {db?.Count ?? 0} accessories from {path}");
-            return db ?? new Dictionary<int, AccessoryData>();
+            // Only process files inside the "Items/" directory
+            if (modulePath.StartsWith("Items/"))
+            {
+                string fullPath = Path.Combine("Data", modulePath);
+                if (File.Exists(fullPath))
+                {
+                    string json = File.ReadAllText(fullPath);
+                    var db = JsonSerializer.Deserialize<Dictionary<int, AccessoryData>>(json, options);
+                    
+                    if (db != null)
+                    {
+                        foreach (var kvp in db) masterDb[kvp.Key] = kvp.Value;
+                        DebugLog.Log($"[SUCCESS] Loaded {db.Count} items from {modulePath}");
+                    }
+                }
+            }
         }
-        catch (System.Exception ex)
-        {
-            DebugLog.Log($"[ERROR] Failed to parse accessory database: {ex.Message}");
-            return new Dictionary<int, AccessoryData>();
-        }
+        return masterDb;
     }
 }
+
+// Data structures for manifest loading
+public record Manifest(List<string> ConfigModules);

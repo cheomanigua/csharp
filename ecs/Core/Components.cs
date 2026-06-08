@@ -6,7 +6,6 @@ public struct CharacterStats
 {
     public int EntityId;
     public bool IsDirty;
-    
     public int[] Values; 
 
     public CharacterStats(int statCount)

@@ -1,23 +1,22 @@
 {
-  "12": { 
-    "Name": "Spider-Fang Gladius", 
-    "Damage": 14, 
-    "WeaponType": "OneHandedMelee", 
-		"EnabledActions": ["MeleeStrike"],
-    "OnHitEffects": [
-      {
-        "Tag": "PoisonStatusComponent",
-        "Properties": { "DamagePerTick": 8.0, "TotalDuration": 5.0, "TickInterval": 1.0 }
+  "500": { 
+    "Name": "Iron Sword", 
+    "Categories": { "Type": "Weapon", "Execution": "Immediate" },
+    "GrantedComponents": [
+      { 
+        "Tag": "WeaponComponent", 
+        "Properties": { "Damage": "10.0", "DamageType": "Physical" } 
       }
     ]
   },
-  "25": {
-    "Name": "Flaming Brand",
-    "Damage": 10,
-    "OnHitEffects": [
-      {
-        "Tag": "FireStatusComponent",
-        "Properties": { "DamagePerTick": 5.0, "TotalDuration": 3.0 }
+  "708": { 
+    "Name": "Sword of Flames", 
+    "Categories": { "Type": "Weapon", "Execution": "Immediate" },
+    "GrantedComponents": [
+      { "Tag": "WeaponComponent", "Properties": { "Damage": "10.0", "DamageType": "Physical" } },
+      { 
+        "Tag": "MagicComponent", 
+        "Properties": { "Trigger": "OnHit", "Effect": "Damage", "Value": "15.0", "DamageType": "Fire" } 
       }
     ]
   }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Core.Engine;
 
 namespace Core;
 
@@ -21,13 +20,6 @@ public class EntityRegistry
 
     public ref CharacterStats GetStatsForEntity(int entityId) => ref _statsSieve.Get(entityId);
 
-    public int[] GetActiveEntities()
-    {
-        int[] active = new int[_activeCount];
-        Array.Copy(_activeEntities, active, _activeCount);
-        return active;
-    }
-
     public void RegisterStats(int entityId, in CharacterStats stats)
     {
         _statsSieve.Set(entityId, in stats);
@@ -35,9 +27,6 @@ public class EntityRegistry
         _activeEntities[_activeCount++] = entityId;
     }
 
-    /// <summary>
-    /// Updates the equipment component and marks the character stats as dirty.
-    /// </summary>
     public void EquipItem(int entityId, int itemId)
     {
         if (!_accessoryDatabase.ContainsKey(itemId))
@@ -61,9 +50,9 @@ public class EntityRegistry
             ref var stat = ref _statsSieve.Get(entityId);
             if (!stat.IsDirty) continue;
 
+            // RECALCULATE: Apply equipment modifiers directly to existing values
             var equipment = _equipmentSieve.Get(entityId);
             
-            // Recalculate stats based on equipment
             foreach (var itemId in (equipment.EquippedItemIds ?? Array.Empty<int>()))
             {
                 if (_accessoryDatabase.TryGetValue(itemId, out var item))
@@ -72,20 +61,16 @@ public class EntityRegistry
                     {
                         switch (comp.Tag)
                         {
-                            case "AttributeModifierComponent":
-                                if (comp.Modifiers != null)
+                            case "AttributeComponent":
+                                // If your DTO record doesn't have Properties, ensure it is added to Model.cs
+                                if (comp.Properties != null && comp.Properties.TryGetValue("Target", out var target))
                                 {
-                                    foreach (var mod in comp.Modifiers)
+                                    if (Enum.TryParse<StatType>(target, out var type) && 
+                                        comp.Properties.TryGetValue("Value", out var valStr))
                                     {
-                                        if (Enum.TryParse<StatType>(mod.Target, out var type))
-                                            stat.Values[(int)type] += (int)mod.Value;
+                                        stat.Values[(int)type] += (int)float.Parse(valStr);
                                     }
                                 }
-                                break;
-
-                            case "MagicActionsComponent":
-                                // Logic for processing magic effects goes here
-                                DebugLog.Log($"Processing magic action for {item.Name} on entity {entityId}");
                                 break;
                         }
                     }
@@ -93,5 +78,12 @@ public class EntityRegistry
             }
             stat.IsDirty = false;
         }
+    }
+
+    public int[] GetActiveEntities()
+    {
+        int[] active = new int[_activeCount];
+        Array.Copy(_activeEntities, active, _activeCount);
+        return active;
     }
 }

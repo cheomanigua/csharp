@@ -5,7 +5,6 @@ using System;
 
 namespace Core
 {
-    // Registry is now inside the namespace, making it visible to the Controller class
     public class MetadataRegistry
     {
         private const int MaxEntities = 1024;
@@ -24,11 +23,12 @@ namespace Core
         private readonly Dictionary<string, RaceData> _races;
         private readonly Dictionary<string, ClassData> _classes;
         private readonly Dictionary<string, SkillData> _skills;
-        private readonly Dictionary<int, WeaponData> _weaponLookup;
+        private readonly Dictionary<int, AccessoryData> _accessoryDatabase = new();
         private List<NPCBlueprintDto> _blueprints = new();
-				public IReadOnlyDictionary<string, RaceData> Races => _races;
-				public IReadOnlyDictionary<string, ClassData> Classes => _classes;
-				public IReadOnlyList<NPCBlueprintDto> Blueprints => _blueprints;
+
+        public IReadOnlyDictionary<string, RaceData> Races => _races;
+        public IReadOnlyDictionary<string, ClassData> Classes => _classes;
+        public IReadOnlyList<NPCBlueprintDto> Blueprints => _blueprints;
 
         public Controller(EntityRegistry registry, MetadataRegistry metaRegistry)
         {
@@ -38,7 +38,17 @@ namespace Core
             _races = LoadData<Dictionary<string, RaceData>>("Data/Character/races.json");
             _classes = LoadData<Dictionary<string, ClassData>>("Data/Character/classes.json");
             _skills = LoadData<Dictionary<string, SkillData>>("Data/Character/skills.json");
-            _weaponLookup = LoadData<Dictionary<int, WeaponData>>("Data/Items/weapons.json");
+
+            LoadAndMerge("Data/Items/weapons.json");
+            LoadAndMerge("Data/Items/potions.json");
+            LoadAndMerge("Data/Items/accessories.json");
+        }
+
+        private void LoadAndMerge(string path)
+        {
+            if (!File.Exists(path)) return;
+            var data = LoadData<Dictionary<int, AccessoryData>>(path);
+            foreach (var entry in data) _accessoryDatabase[entry.Key] = entry.Value;
         }
 
         private T LoadData<T>(string path)
@@ -52,10 +62,10 @@ namespace Core
         public void LoadNPCFromJson(string filePath)
         {
             string json = File.ReadAllText(filePath);
-						_blueprints = JsonSerializer.Deserialize<List<NPCBlueprintDto>>(json) ?? new();
             var npcs = JsonSerializer.Deserialize<List<NPCBlueprintDto>>(json);
 
             if (npcs == null) return;
+            _blueprints = npcs;
 
             foreach (var dto in npcs)
             {
@@ -66,23 +76,15 @@ namespace Core
                 _registry.RegisterStats(dto.EntityId, in stats);
 
                 string skillName = _skills.TryGetValue(charClass.PrimarySkillIndex.ToString(), out var skill) 
-                    ? skill.Name 
-                    : "None";
+                    ? skill.Name : "None";
                 
-                string weaponName = _weaponLookup.TryGetValue(dto.EquippedWeaponId, out var weapon) 
-                    ? weapon.Name 
-                    : "Unarmed";
+                string itemName = _accessoryDatabase.TryGetValue(dto.EquippedItemId, out var item) 
+                    ? item.Name : "Unarmed";
 
-                _metaRegistry.Register(dto.EntityId, dto.Name, weaponName, skillName);
+                _metaRegistry.Register(dto.EntityId, dto.Name, itemName, skillName);
             }
         }
     }
-
-    // Records
-    public record RaceData(int RaceStr, int RaceInt);
-    public record ClassData(int ClassHealth, int ClassMana, int ClassStr, int ClassInt, int PrimarySkillIndex);
-    public record SkillData(string Name, string AttributeScale);
-    public record WeaponData(string Name, int Damage);
 
     public class NPCBlueprintDto
     {
@@ -90,6 +92,6 @@ namespace Core
         public required string Name { get; set; }
         public required string Race { get; set; }
         public required string Class { get; set; }
-        public int EquippedWeaponId { get; set; }
+        public int EquippedItemId { get; set; }
     }
 }
