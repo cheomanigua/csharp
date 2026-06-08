@@ -1,5 +1,5 @@
 using Core.Systems;
-using Core.Systems.Inventory;
+using Core.Systems.Inventory; // Ensure this matches your file structure
 using Core;
 using Core.Commands;
 using System.Collections.Generic;
@@ -15,20 +15,17 @@ public class EngineDriver
     private readonly Controller _controller;
     private readonly RenderSystem _renderSystem;
     private readonly StatInitializationSystem _initSystem = new();
-    private readonly StatRegistry _statRegistry; // injected
     
     // Systems
-    private readonly EquipmentSystem _equipmentSystem;
+    private readonly EquipmentSystem _equipmentSystem = new();
 
-    public EngineDriver(IGameView view, Dictionary<int, AccessoryData> accessoryDatabase, StatRegistry statRegistry)
+    public EngineDriver(IGameView view, Dictionary<int, AccessoryData> accessoryDatabase)
     {
-        _statRegistry = statRegistry; 
-        _registry = new EntityRegistry(accessoryDatabase, _statRegistry);
-        _equipmentSystem = new EquipmentSystem(_statRegistry);
+        _registry = new EntityRegistry(accessoryDatabase);
+        
         _controller = new Controller(_registry, _metaRegistry);
         
-        // FIX: Inject _statRegistry here to match the new GameViewAdapter constructor
-        var adapter = new GameViewAdapter(_registry, _metaRegistry, _statRegistry);
+        var adapter = new GameViewAdapter(_registry, _metaRegistry);
         _renderSystem = new RenderSystem(adapter, view);
     }
 
@@ -44,10 +41,10 @@ public class EngineDriver
             {
                 var bp = _controller.Blueprints.FirstOrDefault(b => b.EntityId == cmd.EntityId);
                 if (bp != null)
-                    _initSystem.Update(_registry, _statRegistry, _queue, bp, _controller.Classes, _controller.Races);
+                    _initSystem.Update(_registry, _queue, bp, _controller.Classes, _controller.Races);
             }
             if (cmd.Type == CommandType.EquipItem)
-                _equipmentSystem.Execute(cmd, _registry);
+                _equipmentSystem.Execute(_registry, cmd);
         }
 
         _registry.ProcessCombat();

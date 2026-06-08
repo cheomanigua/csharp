@@ -7,7 +7,6 @@ public struct CharacterStats
     public int EntityId;
     public bool IsDirty;
     
-    // The flat array containing all stats indexed by StatRegistry
     public int[] Values; 
 
     public CharacterStats(int statCount)

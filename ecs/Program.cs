@@ -6,20 +6,15 @@ class Program
 {
     static void Main(string[] args)
     {
-        // 0. Initialize the Processor and the StatRegistry
+        // 0. Initialize the Processor
         FormulaProcessor.Initialize("Data/System/formulas.json");
         
-        // NEW: Create and Initialize the StatRegistry FIRST
-        var statRegistry = new StatRegistry();
-        statRegistry.Initialize("Data/System/StatsDefinition.json");
-
         // 1. Prepare dependencies
         var view = new ConsoleGameView();
         var accessoryDb = LoadAccessoryDatabase("Data/Items/accessories.json");
 
         // 2. Initialize the Engine 
-        // Pass the statRegistry into the Driver so it can be shared with Systems
-        var engine = new EngineDriver(view, accessoryDb, statRegistry);
+        var engine = new EngineDriver(view, accessoryDb);
 
         // 3. Load data
         engine.LoadGameData("Data/npc_blueprint.json");

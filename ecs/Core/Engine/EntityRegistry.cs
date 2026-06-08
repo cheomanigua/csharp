@@ -12,26 +12,20 @@ public class EntityRegistry
     private readonly int[] _activeEntities = new int[MaxEntities];
     private int _activeCount = 0;
     private readonly Dictionary<int, AccessoryData> _accessoryDatabase;
-    private readonly StatRegistry _statRegistry;
 
-    public EntityRegistry(Dictionary<int, AccessoryData> accessoryDatabase, StatRegistry statRegistry)
+    public EntityRegistry(Dictionary<int, AccessoryData> accessoryDatabase)
     {
         _accessoryDatabase = accessoryDatabase;
-        _statRegistry = statRegistry;
     }
 
-		// Add these to EntityRegistry.cs to satisfy the compiler
-public ref CharacterStats GetStatsForEntity(int entityId) 
-{
-    return ref _statsSieve.Get(entityId);
-}
+    public ref CharacterStats GetStatsForEntity(int entityId) => ref _statsSieve.Get(entityId);
 
-public int[] GetActiveEntities()
-{
-    int[] active = new int[_activeCount];
-    Array.Copy(_activeEntities, active, _activeCount);
-    return active;
-}
+    public int[] GetActiveEntities()
+    {
+        int[] active = new int[_activeCount];
+        Array.Copy(_activeEntities, active, _activeCount);
+        return active;
+    }
 
     public void RegisterStats(int entityId, in CharacterStats stats)
     {
@@ -40,11 +34,15 @@ public int[] GetActiveEntities()
         _activeEntities[_activeCount++] = entityId;
     }
 
+    /// <summary>
+    /// Updates the equipment component and marks the character stats as dirty.
+    /// </summary>
     public void EquipItem(int entityId, int itemId)
     {
         ref var equipment = ref _equipmentSieve.Get(entityId);
         var items = new List<int>(equipment.EquippedItemIds ?? Array.Empty<int>()) { itemId };
         equipment.EquippedItemIds = items.ToArray();
+        
         ref var stats = ref _statsSieve.Get(entityId);
         stats.IsDirty = true;
     }
@@ -68,8 +66,8 @@ public int[] GetActiveEntities()
                             {
                                 foreach (var mod in comp.Modifiers)
                                 {
-                                    int idx = _statRegistry.GetIndex(mod.Target);
-                                    if (idx != -1) stat.Values[idx] += (int)mod.Value;
+                                    if (Enum.TryParse<StatType>(mod.Target, out var type))
+                                        stat.Values[(int)type] += (int)mod.Value;
                                 }
                             }
                         }

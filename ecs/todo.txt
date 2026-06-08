@@ -1,0 +1,2 @@
+1. If I recall correctly, other opinions suggested to not use GetStatsForEntity and GetActiveEntities.
+2. At some point, remove ProcessCombat() from Core/Engine/EntityRegistry.cs
