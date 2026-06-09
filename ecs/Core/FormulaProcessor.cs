@@ -55,10 +55,6 @@ public static class FormulaProcessor
     {
         if (!_rawFormulas.TryGetValue(formulaName, out var formula)) return;
     
-        // 1. IMPORTANT: Reset to Base Stats so we don't stack item bonuses infinitely
-        // Assume you have a way to reset to initial Class/Race values
-        ResetToBaseStats(ref stats, ctx); 
-    
         foreach (var op in formula.Operations)
         {
             float inputValue = !string.IsNullOrEmpty(op.Source) ? ResolveSource(op.Source, stats, ctx) : op.Value;
@@ -82,10 +78,18 @@ public static class FormulaProcessor
     }
 
 
-    private static void ResetToBaseStats(ref CharacterStats stats, FormulaContext ctx)
+    public static void RecalculateStats (ref CharacterStats stats, FormulaContext ctx)
     {
-        // 1. Clear current stats
+        // 1. Clear current stats to start from a clean slate
         Array.Clear(stats.Values, 0, stats.Values.Length);
+
+        // Rebuild derived stats from formulas
+        ExecuteUpdate("UpdateStats", ref stats, ctx);
+
+        // Future:
+        // ApplyEquipmentBonuses(ref stats, ctx);
+        // ApplyTemporaryEffects(ref stats, ctx);
+        // ApplyPassiveSkills(ref stats, ctx);
     }
 
 

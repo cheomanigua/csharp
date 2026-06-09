@@ -35,7 +35,8 @@ class Program
         // 6. Queue equip commands
         engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 1, TargetId = 100 });
         engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 2, TargetId = 101 });
-//        engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 2, TargetId = 300 });
+        //engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 2, TargetId = 300 });
+        //engine.AddCommand(new GameCommand { Type = CommandType.EquipItem, EntityId = 2, TargetId = 301 });
 
         // 7. Game Loop
         bool running = true;

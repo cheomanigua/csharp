@@ -15,17 +15,13 @@ public class StatInitializationSystem
     
         // 1. Initialize empty stats struct
         var stats = new CharacterStats((int)StatType.Count) { EntityId = bp.EntityId, IsDirty = true };
-
-        // IMPORTANT: Ensure stats are truly empty/zeroed before formulas run
-        // (Array.Clear is provided by System namespace)
-        Array.Clear(stats.Values, 0, stats.Values.Length);
         
         // 2. Create the context containing all required data for the FormulaProcessor
         var context = new FormulaContext(stats, classData, race);
 
-        // 3. Delegate to FormulaProcessor using the "UpdateStats" formula group
+        // 3. Delegate to FormulaProcessor using the "RecalculateStats"
         // This replaces the manual assignments of Health, Mana, Strength, and Intelligence
-        FormulaProcessor.ExecuteUpdate("UpdateStats", ref stats, context);
+        FormulaProcessor.RecalculateStats(ref stats, context);
 				DebugLog.Log($"DEBUG: After Init, Health is {stats.Values[(int)StatType.Health]}");
     
         registry.RegisterStats(bp.EntityId, in stats);
