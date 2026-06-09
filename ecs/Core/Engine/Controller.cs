@@ -73,14 +73,21 @@ namespace Core
             foreach (var dto in npcs)
             {
                 if (!_races.TryGetValue(dto.Race, out var race)) continue;
-                if (!_classes.TryGetValue(dto.Class, out var charClass)) continue;
+                if (!_classes.TryGetValue(dto.Class, out var classData)) continue;
 
                 var stats = new CharacterStats { EntityId = dto.EntityId };
                 _registry.RegisterStats(dto.EntityId, in stats);
 
-                string skillName = _skills.TryGetValue(charClass.PrimarySkillIndex.ToString(), out var skill) 
-                    ? skill.Name : "None";
-                
+               string skillName = "None";
+               if (classData.PrimarySkill != null && _skills.TryGetValue(classData.PrimarySkill, out var skill))
+               {
+                   skillName = classData.PrimarySkill;
+               }
+               else
+               {
+                   DebugLog.Log($"[WARNING] NPC {dto.Name} has invalid or null skill: {classData.PrimarySkill}");
+               }
+
                 string itemName = (dto.EquippedItemId >= 0 && dto.EquippedItemId < EngineConfig.MaxItemCapacity && _itemDatabase[dto.EquippedItemId] != null) ? _itemDatabase[dto.EquippedItemId].Name : "Unarmed";
 
                 _metaRegistry.Register(dto.EntityId, dto.Name, itemName, skillName);

@@ -10,15 +10,15 @@ public class StatInitializationSystem
                    IReadOnlyDictionary<string, ClassData> classes, 
                    IReadOnlyDictionary<string, RaceData> races)
     {
-        if (!classes.TryGetValue(bp.Class, out var charClass)) return;
+        if (!classes.TryGetValue(bp.Class, out var classData)) return;
         if (!races.TryGetValue(bp.Race, out var race)) return;
     
         var stats = new CharacterStats((int)StatType.Count) { EntityId = bp.EntityId, IsDirty = true };
     
-        stats.Values[(int)StatType.Health]       = charClass.ClassHealth;
-        stats.Values[(int)StatType.Mana]         = charClass.ClassMana;
-        stats.Values[(int)StatType.Strength]     = charClass.ClassStr + race.RaceStr;
-        stats.Values[(int)StatType.Intelligence] = charClass.ClassInt + race.RaceInt;
+        stats.Values[(int)StatType.Health]       = classData.ClassHealth;
+        stats.Values[(int)StatType.Mana]         = classData.ClassMana;
+        stats.Values[(int)StatType.Strength]     = classData.ClassStr + race.RaceStr;
+        stats.Values[(int)StatType.Intelligence] = classData.ClassInt + race.RaceInt;
     
         registry.RegisterStats(bp.EntityId, in stats);
     }

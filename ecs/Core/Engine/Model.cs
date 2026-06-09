@@ -2,8 +2,8 @@ namespace Core
 {
     // --- 1. Character Data Records ---
     public record RaceData(int RaceStr, int RaceInt);
-    public record ClassData(int ClassHealth, int ClassMana, int ClassStr, int ClassInt, int PrimarySkillIndex);
-    public record SkillData(string Name, string AttributeScale);
+    public record ClassData(int ClassHealth, int ClassMana, int ClassStr, int ClassInt, string PrimarySkill);
+    public record SkillData(string AttributeScale);
 
     // --- 2. Attribute/Modifier Records ---
     public record ModifierDto(string Target, float Value);
