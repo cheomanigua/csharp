@@ -7,8 +7,7 @@ namespace Core
 {
     public class MetadataRegistry
     {
-        private const int MaxEntities = 1024;
-        private readonly MetadataComponent[] _metadata = new MetadataComponent[MaxEntities];
+        private readonly MetadataComponent[] _metadata = new MetadataComponent[EngineConfig.MaxEntities];
 
         public void Register(int entityId, string name, string weapon, string skill) =>
             _metadata[entityId] = new MetadataComponent { Name = name, WeaponName = weapon, SkillName = skill };

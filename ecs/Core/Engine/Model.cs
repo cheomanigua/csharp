@@ -26,5 +26,6 @@ namespace Core
 		public static class EngineConfig
 		{
 			public const int MaxItemCapacity = 700;
+			public const int MaxEntities = 1024;
 		}
 }

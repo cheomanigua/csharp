@@ -5,12 +5,11 @@ namespace Core;
 
 public class EntityRegistry
 {
-    private const int MaxEntities = 1024;
     private readonly ItemData[] _itemDatabase = new ItemData[EngineConfig.MaxItemCapacity];
-    private readonly EntitySieve<CharacterStats> _statsSieve = new(MaxEntities);
-    private readonly EntitySieve<EquipmentComponent> _equipmentSieve = new(MaxEntities);
-    private readonly TagGrid _tagGrid = new(MaxEntities);
-    private readonly int[] _activeEntities = new int[MaxEntities];
+    private readonly EntitySieve<CharacterStats> _statsSieve = new(EngineConfig.MaxEntities);
+    private readonly EntitySieve<EquipmentComponent> _equipmentSieve = new(EngineConfig.MaxEntities);
+    private readonly TagGrid _tagGrid = new(EngineConfig.MaxEntities);
+    private readonly int[] _activeEntities = new int[EngineConfig.MaxEntities];
     private int _activeCount = 0;
 
     public EntityRegistry(Dictionary<int, ItemData> itemDatabase)
