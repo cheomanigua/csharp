@@ -97,4 +97,5 @@ public class EntityRegistry
         Array.Copy(_activeEntities, active, _activeCount);
         return active;
     }
+
 }

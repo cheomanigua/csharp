@@ -13,12 +13,16 @@ public class StatInitializationSystem
         if (!classes.TryGetValue(bp.Class, out var classData)) return;
         if (!races.TryGetValue(bp.Race, out var race)) return;
     
+        // 1. Initialize empty stats struct
         var stats = new CharacterStats((int)StatType.Count) { EntityId = bp.EntityId, IsDirty = true };
-    
-        stats.Values[(int)StatType.Health]       = classData.ClassHealth;
-        stats.Values[(int)StatType.Mana]         = classData.ClassMana;
-        stats.Values[(int)StatType.Strength]     = classData.ClassStr + race.RaceStr;
-        stats.Values[(int)StatType.Intelligence] = classData.ClassInt + race.RaceInt;
+        
+        // 2. Create the context containing all required data for the FormulaProcessor
+        var context = new FormulaContext(stats, classData, race);
+
+        // 3. Delegate to FormulaProcessor using the "InitStats" formula group
+        // This replaces the manual assignments of Health, Mana, Strength, and Intelligence
+        FormulaProcessor.ExecuteInit("InitStats", ref stats, context);
+				DebugLog.Log($"DEBUG: After Init, Health is {stats.Values[(int)StatType.Health]}");
     
         registry.RegisterStats(bp.EntityId, in stats);
     }

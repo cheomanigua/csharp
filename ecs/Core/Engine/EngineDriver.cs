@@ -22,6 +22,9 @@ public class EngineDriver
     public EngineDriver(IGameView view, Dictionary<int, ItemData> itemDatabase)
     {
         _registry = new EntityRegistry(itemDatabase);
+
+        // 1. Ensure formulas are loaded before any system uses them
+        FormulaProcessor.Initialize("Data/System/formulas.json");
         
         _controller = new Controller(_registry, _metaRegistry);
         

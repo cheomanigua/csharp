@@ -5,8 +5,8 @@
       { "Type": "Add", "Target": "Strength", "Source": "RaceStr" },
       { "Type": "Add", "Target": "Intelligence", "Source": "ClassInt" },
       { "Type": "Add", "Target": "Intelligence", "Source": "RaceInt" },
-      { "Type": "Add", "Target": "Health", "Source": "ClassHealth" },
-      { "Type": "Add", "Target": "Mana", "Source": "ClassMana" }
+      { "Type": "Multiply", "Target": "Health", "Source": "Strength", "Modifier": 5.0 },
+      { "Type": "Multiply", "Target": "Mana", "Source": "Intelligence", "Modifier": 10.0 }
     ]
   },
   "BaseAttack": {
