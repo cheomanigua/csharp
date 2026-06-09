@@ -21,4 +21,10 @@ namespace Core
         string? Slot, 
         List<GrantedComponentDto> GrantedComponents
     );
+
+		// --- 5. Constants
+		public static class EngineConfig
+		{
+			public const int MaxItemCapacity = 700;
+		}
 }

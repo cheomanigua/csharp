@@ -23,7 +23,7 @@ namespace Core
         private readonly Dictionary<string, RaceData> _races;
         private readonly Dictionary<string, ClassData> _classes;
         private readonly Dictionary<string, SkillData> _skills;
-        private readonly Dictionary<int, ItemData> _itemDatabase = new();
+        private readonly ItemData[] _itemDatabase = new ItemData[EngineConfig.MaxItemCapacity];
         private List<NPCBlueprintDto> _blueprints = new();
 
         public IReadOnlyDictionary<string, RaceData> Races => _races;
@@ -48,7 +48,10 @@ namespace Core
         {
             if (!File.Exists(path)) return;
             var data = LoadData<Dictionary<int, ItemData>>(path);
-            foreach (var entry in data) _itemDatabase[entry.Key] = entry.Value;
+            foreach (var entry in data)
+						{
+							if (entry.Key < EngineConfig.MaxItemCapacity) _itemDatabase[entry.Key] = entry.Value;
+						}
         }
 
         private T LoadData<T>(string path)
@@ -78,8 +81,7 @@ namespace Core
                 string skillName = _skills.TryGetValue(charClass.PrimarySkillIndex.ToString(), out var skill) 
                     ? skill.Name : "None";
                 
-                string itemName = _itemDatabase.TryGetValue(dto.EquippedItemId, out var item) 
-                    ? item.Name : "Unarmed";
+                string itemName = (dto.EquippedItemId >= 0 && dto.EquippedItemId < EngineConfig.MaxItemCapacity && _itemDatabase[dto.EquippedItemId] != null) ? _itemDatabase[dto.EquippedItemId].Name : "Unarmed";
 
                 _metaRegistry.Register(dto.EntityId, dto.Name, itemName, skillName);
             }

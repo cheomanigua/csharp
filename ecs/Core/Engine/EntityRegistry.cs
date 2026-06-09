@@ -6,16 +6,20 @@ namespace Core;
 public class EntityRegistry
 {
     private const int MaxEntities = 1024;
+    private readonly ItemData[] _itemDatabase = new ItemData[EngineConfig.MaxItemCapacity];
     private readonly EntitySieve<CharacterStats> _statsSieve = new(MaxEntities);
     private readonly EntitySieve<EquipmentComponent> _equipmentSieve = new(MaxEntities);
     private readonly TagGrid _tagGrid = new(MaxEntities);
     private readonly int[] _activeEntities = new int[MaxEntities];
     private int _activeCount = 0;
-    private readonly Dictionary<int, ItemData> _itemDatabase;
 
     public EntityRegistry(Dictionary<int, ItemData> itemDatabase)
     {
-        _itemDatabase = itemDatabase;
+        // Copy the loaded dictionary into the array
+        foreach (var kvp in itemDatabase)
+        {
+            if (kvp.Key < EngineConfig.MaxItemCapacity) _itemDatabase[kvp.Key] = kvp.Value;
+        }
     }
 
     public ref CharacterStats GetStatsForEntity(int entityId) => ref _statsSieve.Get(entityId);
@@ -29,7 +33,8 @@ public class EntityRegistry
 
     public void EquipItem(int entityId, int itemId)
     {
-        if (!_itemDatabase.ContainsKey(itemId))
+        // Direct array access is now O(1) and cache-friendly
+        if (itemId >= EngineConfig.MaxItemCapacity || _itemDatabase[itemId] == null)
         {
             DebugLog.Log($"EquipItem: FAILED. Item {itemId} does not exist in database.");
             return; 
@@ -49,29 +54,35 @@ public class EntityRegistry
             int entityId = _activeEntities[i];
             ref var stat = ref _statsSieve.Get(entityId);
             if (!stat.IsDirty) continue;
-
+    
             // RECALCULATE: Apply equipment modifiers directly to existing values
             var equipment = _equipmentSieve.Get(entityId);
             
             foreach (var itemId in (equipment.EquippedItemIds ?? Array.Empty<int>()))
             {
-                if (_itemDatabase.TryGetValue(itemId, out var item))
+                // Direct array access check
+                if (itemId >= 0 && itemId < EngineConfig.MaxItemCapacity)
                 {
-                    foreach (var comp in item.GrantedComponents)
+                    var item = _itemDatabase[itemId];
+                    
+                    // Ensure the slot is not null before processing
+                    if (item != null)
                     {
-                        switch (comp.Tag)
+                        foreach (var comp in item.GrantedComponents)
                         {
-                            case "AttributeComponent":
-                                // If your DTO record doesn't have Properties, ensure it is added to Model.cs
-                                if (comp.Properties != null && comp.Properties.TryGetValue("Target", out var target))
-                                {
-                                    if (Enum.TryParse<StatType>(target, out var type) && 
-                                        comp.Properties.TryGetValue("Value", out var valStr))
+                            switch (comp.Tag)
+                            {
+                                case "AttributeComponent":
+                                    if (comp.Properties != null && comp.Properties.TryGetValue("Target", out var target))
                                     {
-                                        stat.Values[(int)type] += (int)float.Parse(valStr);
+                                        if (Enum.TryParse<StatType>(target, out var type) && 
+                                            comp.Properties.TryGetValue("Value", out var valStr))
+                                        {
+                                            stat.Values[(int)type] += (int)float.Parse(valStr);
+                                        }
                                     }
-                                }
-                                break;
+                                    break;
+                            }
                         }
                     }
                 }
@@ -79,6 +90,7 @@ public class EntityRegistry
             stat.IsDirty = false;
         }
     }
+
 
     public int[] GetActiveEntities()
     {

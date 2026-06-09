@@ -1,5 +1,5 @@
 {
-  "500": { 
+  "100": { 
     "Name": "Iron Sword", 
     "Categories": { "Type": "Weapon", "Execution": "Immediate" },
     "GrantedComponents": [
@@ -9,7 +9,7 @@
       }
     ]
   },
-  "708": { 
+  "101": { 
     "Name": "Sword of Flames", 
     "Categories": { "Type": "Weapon", "Execution": "Immediate" },
     "GrantedComponents": [
@@ -18,6 +18,14 @@
         "Tag": "MagicComponent", 
         "Properties": { "Trigger": "OnHit", "Effect": "Damage", "Value": "15.0", "DamageType": "Fire" } 
       }
+    ]
+  },
+  "103": { 
+    "Name": "Acid-Dipped Dagger", 
+    "Categories": { "Type": "Weapon", "Execution": "Immediate" },
+    "GrantedComponents": [
+      { "Tag": "WeaponComponent", "Properties": { "Damage": "8.0", "DamageType": "Physical" } },
+      { "Tag": "MagicComponent", "Properties": { "Trigger": "OnHit", "Effect": "Corrode", "Value": "2.0", "Duration": "Permanent" } }
     ]
   }
 }
