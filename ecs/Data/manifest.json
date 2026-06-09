@@ -6,6 +6,9 @@
     "Character/classes.json",
     "Character/skills.json",
     "Items/weapons.json",
-    "Items/master_items.json"
+    "Items/armor.json",
+    "Items/potions.json",
+    "Items/scrolls.json",
+    "Items/accessories.json"
   ]
 }
