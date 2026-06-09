@@ -16,7 +16,7 @@ namespace Core
     );
 
     // --- 4. Main Item Record ---
-    public record AccessoryData(
+    public record ItemData(
         string Name, 
         string? Slot, 
         List<GrantedComponentDto> GrantedComponents

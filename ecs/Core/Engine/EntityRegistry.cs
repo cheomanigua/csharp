@@ -11,11 +11,11 @@ public class EntityRegistry
     private readonly TagGrid _tagGrid = new(MaxEntities);
     private readonly int[] _activeEntities = new int[MaxEntities];
     private int _activeCount = 0;
-    private readonly Dictionary<int, AccessoryData> _accessoryDatabase;
+    private readonly Dictionary<int, ItemData> _itemDatabase;
 
-    public EntityRegistry(Dictionary<int, AccessoryData> accessoryDatabase)
+    public EntityRegistry(Dictionary<int, ItemData> itemDatabase)
     {
-        _accessoryDatabase = accessoryDatabase;
+        _itemDatabase = itemDatabase;
     }
 
     public ref CharacterStats GetStatsForEntity(int entityId) => ref _statsSieve.Get(entityId);
@@ -29,7 +29,7 @@ public class EntityRegistry
 
     public void EquipItem(int entityId, int itemId)
     {
-        if (!_accessoryDatabase.ContainsKey(itemId))
+        if (!_itemDatabase.ContainsKey(itemId))
         {
             DebugLog.Log($"EquipItem: FAILED. Item {itemId} does not exist in database.");
             return; 
@@ -55,7 +55,7 @@ public class EntityRegistry
             
             foreach (var itemId in (equipment.EquippedItemIds ?? Array.Empty<int>()))
             {
-                if (_accessoryDatabase.TryGetValue(itemId, out var item))
+                if (_itemDatabase.TryGetValue(itemId, out var item))
                 {
                     foreach (var comp in item.GrantedComponents)
                     {

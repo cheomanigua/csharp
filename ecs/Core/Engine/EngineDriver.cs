@@ -19,9 +19,9 @@ public class EngineDriver
     // Systems
     private readonly EquipmentSystem _equipmentSystem = new();
 
-    public EngineDriver(IGameView view, Dictionary<int, AccessoryData> accessoryDatabase)
+    public EngineDriver(IGameView view, Dictionary<int, ItemData> itemDatabase)
     {
-        _registry = new EntityRegistry(accessoryDatabase);
+        _registry = new EntityRegistry(itemDatabase);
         
         _controller = new Controller(_registry, _metaRegistry);
         

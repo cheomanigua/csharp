@@ -52,9 +52,9 @@ class Program
         return JsonSerializer.Deserialize<Manifest>(json) ?? new Manifest(new List<string>());
     }
 
-    private static Dictionary<int, AccessoryData> LoadItemDatabaseFromManifest(Manifest manifest)
+    private static Dictionary<int, ItemData> LoadItemDatabaseFromManifest(Manifest manifest)
     {
-        var masterDb = new Dictionary<int, AccessoryData>();
+        var masterDb = new Dictionary<int, ItemData>();
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         foreach (var modulePath in manifest.ConfigModules)
@@ -66,7 +66,7 @@ class Program
                 if (File.Exists(fullPath))
                 {
                     string json = File.ReadAllText(fullPath);
-                    var db = JsonSerializer.Deserialize<Dictionary<int, AccessoryData>>(json, options);
+                    var db = JsonSerializer.Deserialize<Dictionary<int, ItemData>>(json, options);
                     
                     if (db != null)
                     {

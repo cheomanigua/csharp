@@ -23,7 +23,7 @@ namespace Core
         private readonly Dictionary<string, RaceData> _races;
         private readonly Dictionary<string, ClassData> _classes;
         private readonly Dictionary<string, SkillData> _skills;
-        private readonly Dictionary<int, AccessoryData> _accessoryDatabase = new();
+        private readonly Dictionary<int, ItemData> _itemDatabase = new();
         private List<NPCBlueprintDto> _blueprints = new();
 
         public IReadOnlyDictionary<string, RaceData> Races => _races;
@@ -47,8 +47,8 @@ namespace Core
         private void LoadAndMerge(string path)
         {
             if (!File.Exists(path)) return;
-            var data = LoadData<Dictionary<int, AccessoryData>>(path);
-            foreach (var entry in data) _accessoryDatabase[entry.Key] = entry.Value;
+            var data = LoadData<Dictionary<int, ItemData>>(path);
+            foreach (var entry in data) _itemDatabase[entry.Key] = entry.Value;
         }
 
         private T LoadData<T>(string path)
@@ -78,7 +78,7 @@ namespace Core
                 string skillName = _skills.TryGetValue(charClass.PrimarySkillIndex.ToString(), out var skill) 
                     ? skill.Name : "None";
                 
-                string itemName = _accessoryDatabase.TryGetValue(dto.EquippedItemId, out var item) 
+                string itemName = _itemDatabase.TryGetValue(dto.EquippedItemId, out var item) 
                     ? item.Name : "Unarmed";
 
                 _metaRegistry.Register(dto.EntityId, dto.Name, itemName, skillName);
