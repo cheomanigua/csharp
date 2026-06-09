@@ -51,63 +51,62 @@ public static class FormulaProcessor
     }
 
     // --- Initialization Execution ---
-    public static void ExecuteInit(string formulaName, ref CharacterStats stats, FormulaContext ctx)
+    public static void ExecuteUpdate(string formulaName, ref CharacterStats stats, FormulaContext ctx)
     {
         if (!_rawFormulas.TryGetValue(formulaName, out var formula)) return;
-
+    
+        // 1. IMPORTANT: Reset to Base Stats so we don't stack item bonuses infinitely
+        // Assume you have a way to reset to initial Class/Race values
+        ResetToBaseStats(ref stats, ctx); 
+    
         foreach (var op in formula.Operations)
         {
-            if (op.Source == null) continue;
-            float sourceValue = ResolveSource(op.Source, ctx);
-            
+            float inputValue = !string.IsNullOrEmpty(op.Source) ? ResolveSource(op.Source, stats, ctx) : op.Value;
+    
             if (Enum.TryParse<StatType>(op.Target, out var targetType))
             {
                 switch (op.Type)
                 {
-                    case "Add": stats.Values[(int)targetType] += (int)sourceValue; break;
-                    //case "Multiply": stats.Values[(int)targetType] = (int)(sourceValue * op.Modifier); break;
-										case "Multiply": 
-        // Debug check to verify the source value before applying the modifier
-        if (op.Target == "Health")
-        {
-            DebugLog.Log($"DEBUG: Calculating Health. Current Strength is: {ctx.Stats.Values[(int)StatType.Strength]}");
-        }
-        
-        stats.Values[(int)targetType] = (int)(sourceValue * op.Modifier); 
-        break;
-                    case "Set": stats.Values[(int)targetType] = (int)sourceValue; break;
+                    case "Add":
+                        stats.Values[(int)targetType] += (int)inputValue;
+                        break;
+                    case "Multiply":
+                        stats.Values[(int)targetType] *= (int)inputValue;
+                        break;
+                    case "Set":
+                        stats.Values[(int)targetType] = (int)inputValue;
+                        break;
                 }
-								ctx.Stats.Values[(int)targetType] = stats.Values[(int)targetType];
             }
         }
-				DebugLog.Log($"DEBUG: FormulaProcessor finished. Health: {stats.Values[(int)StatType.Health]}, Mana: {stats.Values[(int)StatType.Mana]}");
     }
 
-		private static float ResolveSource(string source, FormulaContext ctx)
+
+    private static void ResetToBaseStats(ref CharacterStats stats, FormulaContext ctx)
     {
-        if (string.IsNullOrEmpty(source)) return 0;
-    
-        // 1. Check if the source is a StatType (e.g., "Strength")
-        if (Enum.TryParse<StatType>(source, out var type))
-            return ctx.Stats.Values[(int)type];
-    
-        // 2. Dynamic Property Lookup via Reflection (for ClassData/RaceData)
+        // 1. Clear current stats
+        Array.Clear(stats.Values, 0, stats.Values.Length);
+    }
+
+
+    private static float ResolveSource(string source, CharacterStats stats, FormulaContext ctx)
+    {
+        // Try to get from ClassData
         var classProp = ctx.Class?.GetType().GetProperty(source);
         if (classProp != null) return Convert.ToSingle(classProp.GetValue(ctx.Class));
     
+        // Try to get from RaceData
         var raceProp = ctx.Race?.GetType().GetProperty(source);
         if (raceProp != null) return Convert.ToSingle(raceProp.GetValue(ctx.Race));
     
-        // 3. Complex Source Parsing (e.g., "Strength * 1.5")
-        if (source.Contains("*"))
-        {
-            var parts = source.Split('*');
-            if (Enum.TryParse<StatType>(parts[0].Trim(), out var type2))
-                return ctx.Stats.Values[(int)type2] * float.Parse(parts[1]);
-        }
-        
+        // Try to get from StatType enum
+        if (Enum.TryParse<StatType>(source, out var type))
+            return stats.Values[(int)type];
+    
         return 0;
     }
+
+
 }
 
 public record FormulaDto(List<OperationDto> Operations);

@@ -1,6 +1,6 @@
 namespace Core.Commands;
 
-public enum CommandType { Move, Attack, InitStats, EquipItem }
+public enum CommandType { Move, Attack, UpdateStats, EquipItem }
 
 
 public struct GameCommand

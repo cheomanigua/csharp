@@ -40,7 +40,7 @@ public class EngineDriver
         while (_queue.HasCommands)
         {
             var cmd = _queue.Dequeue();
-            if (cmd.Type == CommandType.InitStats)
+            if (cmd.Type == CommandType.UpdateStats)
             {
                 var bp = _controller.Blueprints.FirstOrDefault(b => b.EntityId == cmd.EntityId);
                 if (bp != null)
