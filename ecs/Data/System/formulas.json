@@ -6,10 +6,10 @@
       { "Type": "Set", "Target": "Intelligence", "Source": "ClassInt" },
       { "Type": "Add", "Target": "Intelligence", "Source": "RaceInt" },
 
-			{ "Type": "Set", "Target": "Health", "Source": "Strength" },
+      { "Type": "Set", "Target": "Health", "Source": "Strength" },
       { "Type": "Multiply", "Target": "Health", "Value": 5.0 },
 
-			{ "Type": "Set", "Target": "Mana", "Source": "Intelligence" },
+      { "Type": "Set", "Target": "Mana", "Source": "Intelligence" },
       { "Type": "Multiply", "Target": "Mana", "Value": 10.0 }
     ]
   },
