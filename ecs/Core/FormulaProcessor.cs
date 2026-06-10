@@ -26,8 +26,7 @@ public static class FormulaProcessor
         }
     }
 
-    // --- Combat Execution ---
-    public static float Execute(string formulaName, in CharacterStats stats, int weaponDmg)
+    public static unsafe float Execute(string formulaName, in EntityHotData stats, int weaponDmg)
     {
         if (!_rawFormulas.TryGetValue(formulaName, out var formula))
             return weaponDmg;
@@ -38,7 +37,7 @@ public static class FormulaProcessor
             float statValue = 0;
             if (!string.IsNullOrEmpty(op.Stat) && Enum.TryParse<StatType>(op.Stat, out var type))
             {
-                statValue = stats.Values[(int)type];
+                statValue = stats.Stats[(int)type];
             }
 
             switch (op.Type)
@@ -50,67 +49,55 @@ public static class FormulaProcessor
         return result + weaponDmg;
     }
 
-    // --- Initialization Execution ---
-    public static void ExecuteUpdate(string formulaName, ref CharacterStats stats, FormulaContext ctx)
+    public static unsafe void ExecuteUpdate(string formulaName, ref EntityHotData stats, FormulaContext ctx)
     {
         if (!_rawFormulas.TryGetValue(formulaName, out var formula)) return;
     
         foreach (var op in formula.Operations)
         {
-            float inputValue = !string.IsNullOrEmpty(op.Source) ? ResolveSource(op.Source, stats, ctx) : op.Value;
+            float inputValue = !string.IsNullOrEmpty(op.Source) 
+                ? ResolveSource(op.Source, stats, ctx) 
+                : op.Value;
     
             if (Enum.TryParse<StatType>(op.Target, out var targetType))
             {
                 switch (op.Type)
                 {
                     case "Add":
-                        stats.Values[(int)targetType] += (int)inputValue;
+                        stats.Stats[(int)targetType] += (int)inputValue;
                         break;
                     case "Multiply":
-                        stats.Values[(int)targetType] *= (int)inputValue;
+                        stats.Stats[(int)targetType] *= (int)inputValue;
                         break;
                     case "Set":
-                        stats.Values[(int)targetType] = (int)inputValue;
+                        stats.Stats[(int)targetType] = (int)inputValue;
                         break;
                 }
             }
         }
     }
 
-
-    public static void RecalculateStats (ref CharacterStats stats, FormulaContext ctx)
+    public static unsafe void RecalculateStats(ref EntityHotData stats, FormulaContext ctx)
     {
-        // 1. Clear current stats to start from a clean slate
-        Array.Clear(stats.Values, 0, stats.Values.Length);
+        for (int i = 0; i < (int)StatType.Count; i++)
+            stats.Stats[i] = 0;
 
-        // Rebuild derived stats from formulas
         ExecuteUpdate("UpdateStats", ref stats, ctx);
-
-        // Future:
-        // ApplyEquipmentBonuses(ref stats, ctx);
-        // ApplyTemporaryEffects(ref stats, ctx);
-        // ApplyPassiveSkills(ref stats, ctx);
     }
 
-
-    private static float ResolveSource(string source, CharacterStats stats, FormulaContext ctx)
+    private static unsafe float ResolveSource(string source, EntityHotData stats, FormulaContext ctx)
     {
-        // Try to get from ClassData
         var classProp = ctx.Class?.GetType().GetProperty(source);
         if (classProp != null) return Convert.ToSingle(classProp.GetValue(ctx.Class));
     
-        // Try to get from RaceData
         var raceProp = ctx.Race?.GetType().GetProperty(source);
         if (raceProp != null) return Convert.ToSingle(raceProp.GetValue(ctx.Race));
     
-        // Try to get from StatType enum
         if (Enum.TryParse<StatType>(source, out var type))
-            return stats.Values[(int)type];
+            return stats.Stats[(int)type];
     
         return 0;
     }
-
-
 }
 
 public record FormulaDto(List<OperationDto> Operations);

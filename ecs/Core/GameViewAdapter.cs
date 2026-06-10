@@ -11,19 +11,19 @@ public class GameViewAdapter
         _meta = meta;
     }
 
-    public void UpdateView(int entityId, IGameView view)
+    public unsafe void UpdateView(int entityId, IGameView view)
     {
-        ref readonly var stats = ref _registry.GetStatsForEntity(entityId);
+        ref var hotData = ref _registry.GetHotData(entityId);
         ref readonly var meta = ref _meta.Get(entityId);
         
         var dto = new CharacterSheetDto(
             meta.Name,
             meta.WeaponName,
             meta.SkillName,
-            stats.Values[(int)StatType.Health],
-            stats.Values[(int)StatType.Mana],
-            stats.Values[(int)StatType.Strength],
-            stats.Values[(int)StatType.Intelligence]
+            hotData.Stats[(int)StatType.Health],
+            hotData.Stats[(int)StatType.Mana],
+            hotData.Stats[(int)StatType.Strength],
+            hotData.Stats[(int)StatType.Intelligence]
         );
         
         view.Render(in dto);

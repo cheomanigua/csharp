@@ -1,18 +1,35 @@
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace Core;
 
-public struct CharacterStats
+
+[StructLayout(LayoutKind.Sequential, Pack = 4)]
+public unsafe struct EntityHotData
 {
     public int EntityId;
     public bool IsDirty;
-    public int[] Values; 
 
-    public CharacterStats(int statCount)
+    public fixed int Stats[(int)StatType.Count];
+
+    public int EquippedItemCount;
+    public fixed int EquippedItemIds[8];
+
+    public EntityHotData(int entityId)
     {
-        EntityId = 0;
+        EntityId = entityId;
         IsDirty = true;
-        Values = new int[statCount];
+        EquippedItemCount = 0;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void AddEquippedItem(int itemId)
+    {
+        if (EquippedItemCount < 8)
+        {
+            EquippedItemIds[EquippedItemCount++] = itemId;
+            IsDirty = true;
+        }
     }
 }
 
@@ -35,10 +52,4 @@ public struct AttributeModifier
 {
     public string Target; 
     public float Value;
-}
-
-public struct EquipmentComponent
-{
-    public int EntityId;
-    public int[] EquippedItemIds;
 }

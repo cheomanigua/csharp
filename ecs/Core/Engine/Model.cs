@@ -8,10 +8,8 @@ namespace Core
     public record SkillData(string AttributeScale);
 
     // --- 2. Context for FormulaProcessor ---
-    // This allows the FormulaProcessor to access any required game data 
-    // without knowing about specific Systems.
     public record FormulaContext(
-        CharacterStats Stats, 
+        EntityHotData Stats, 
         ClassData? Class = null, 
         RaceData? Race = null, 
         int WeaponDamage = 0,

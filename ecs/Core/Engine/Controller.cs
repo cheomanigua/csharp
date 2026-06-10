@@ -48,9 +48,10 @@ namespace Core
             if (!File.Exists(path)) return;
             var data = LoadData<Dictionary<int, ItemData>>(path);
             foreach (var entry in data)
-						{
-							if (entry.Key < EngineConfig.MaxItemCapacity) _itemDatabase[entry.Key] = entry.Value;
-						}
+            {
+                if (entry.Key < EngineConfig.MaxItemCapacity) 
+                    _itemDatabase[entry.Key] = entry.Value;
+            }
         }
 
         private T LoadData<T>(string path)
@@ -74,22 +75,26 @@ namespace Core
                 if (!_races.TryGetValue(dto.Race, out var race)) continue;
                 if (!_classes.TryGetValue(dto.Class, out var classData)) continue;
 
-                var stats = new CharacterStats { EntityId = dto.EntityId };
-                _registry.RegisterStats(dto.EntityId, in stats);
+                var hotData = new EntityHotData(dto.EntityId);
+                _registry.RegisterStats(dto.EntityId, in hotData);
 
-               string skillName = "None";
-               if (classData.PrimarySkill != null && _skills.TryGetValue(classData.PrimarySkill, out var skill))
-               {
-                   skillName = classData.PrimarySkill;
-               }
-               else
-               {
-                   DebugLog.Log($"[WARNING] NPC {dto.Name} has invalid or null skill: {classData.PrimarySkill}");
-               }
+                string skillName = "None";
+                if (classData.PrimarySkill != null && _skills.TryGetValue(classData.PrimarySkill, out var skill))
+                {
+                    skillName = classData.PrimarySkill;
+                }
+                else
+                {
+                    DebugLog.Log($"[WARNING] NPC {dto.Name} has invalid or null skill: {classData.PrimarySkill}");
+                }
 
-                string itemName = (dto.EquippedItemId >= 0 && dto.EquippedItemId < EngineConfig.MaxItemCapacity && _itemDatabase[dto.EquippedItemId] != null) ? _itemDatabase[dto.EquippedItemId].Name : "Unarmed";
+                string itemName = (dto.EquippedItemId >= 0 && dto.EquippedItemId < EngineConfig.MaxItemCapacity && _itemDatabase[dto.EquippedItemId] != null) 
+                    ? _itemDatabase[dto.EquippedItemId].Name : "Unarmed";
 
                 _metaRegistry.Register(dto.EntityId, dto.Name, itemName, skillName);
+
+                if (dto.EquippedItemId >= 0)
+                    _registry.EquipItem(dto.EntityId, dto.EquippedItemId);
             }
         }
     }
