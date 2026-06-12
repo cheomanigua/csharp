@@ -62,7 +62,7 @@ namespace Core
             return data;
         }
 
-        public void LoadNPCFromJson(string filePath)
+        public unsafe void LoadNPCFromJson(string filePath)
         {
             string json = File.ReadAllText(filePath);
             var npcs = JsonSerializer.Deserialize<List<NPCBlueprintDto>>(json);
